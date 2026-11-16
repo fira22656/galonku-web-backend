@@ -1,29 +1,14 @@
 import { Router } from 'express';
-import db from '../config/db.js';
+import { getAllProducts } from '../services/productService.js';
 
 const router = Router();
 
-// GET: Ambil semua produk galon
 router.get('/', async (req, res) => {
   try {
-    const [rows] = await db.query('SELECT * FROM products');
-    res.json(rows);
+    const products = await getAllProducts();
+    res.json({ success: true, data: products });
   } catch (error) {
-    res.status(500).json({ error: 'Gagal mengambil data produk' });
-  }
-});
-
-// POST: Tambah produk galon baru
-router.post('/', async (req, res) => {
-  const { namaProduk, harga, stok, deskripsi } = req.body;
-  try {
-    const [result]: any = await db.query(
-      'INSERT INTO products (namaProduk, harga, stok, deskripsi) VALUES (?, ?, ?, ?)',
-      [namaProduk, harga, stok, deskripsi]
-    );
-    res.status(201).json({ id: result.insertId, namaProduk, harga, stok, deskripsi });
-  } catch (error) {
-    res.status(500).json({ error: 'Gagal menambahkan produk' });
+    res.status(500).json({ success: false, message: 'Gagal mengambil data produk' });
   }
 });
 
