@@ -3,22 +3,22 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
 
-// Import semua route yang sudah kamu buat di src/routes
 import authRoutes from './routes/authRoutes.js';
 import productRoutes from './routes/productRoutes.js';
 import orderRoutes from './routes/orderRoutes.js';
 import aiRoutes from './routes/aiRoutes.js';
+import reportRoutes from './routes/reportRoutes.js';
 
 dotenv.config();
 
 const app = express();
 
-// 1. Middleware wajib (agar tidak diblokir browser & bisa baca data JSON)
+// 1. Middleware dasar
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// 2. Buka akses folder uploads agar foto produk bisa tampil di website & mobile
+// 2. Buka akses folder uploads agar foto produk bisa tampil di frontend
 app.use('/uploads', express.static(path.resolve('uploads')));
 
 // 3. Daftarkan semua endpoint API
@@ -26,6 +26,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/ai', aiRoutes);
+app.use('/api/reports', reportRoutes);
 
 // 4. Endpoint cek status server
 app.get('/', (_req, res) => {
