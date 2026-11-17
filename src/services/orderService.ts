@@ -44,7 +44,7 @@ export const getAllOrders = async (status?: string) => {
     query += ' WHERE status = ?';
     params.push(status);
   }
-  query += ' ORDER BY created_at DESC';
+  query += ' ORDER BY createdAt DESC';
 
   const [orders]: any = await db.query(query, params);
   const [items]: any = await db.query('SELECT * FROM orderitem');
